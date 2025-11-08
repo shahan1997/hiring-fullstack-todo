@@ -49,7 +49,7 @@ function App() {
         await toggleTodoComplete(id);
         const todo = todos.find((t) => t._id === id);
         success(
-          todo?.done ? "Task marked as done!" : "Task marked as pending!"
+          todo?.done ? "Task marked as pending!" : "Task marked as done!"
         );
       } catch (err) {
         const message =
