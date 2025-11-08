@@ -17,6 +17,7 @@ function App() {
     error,
     addTodo,
     updateTodoItem,
+    updateStatusTodoItem,
     deleteTodoItem,
     toggleTodoComplete,
   } = useTodos();

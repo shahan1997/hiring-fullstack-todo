@@ -39,6 +39,20 @@ export const todoService = {
     id: string,
     input: Partial<CreateTodoInput> & { completed?: boolean }
   ): Promise<Todo> => {
+    const response = await apiClient.put<ApiResponse<Todo>>(
+      `/todos/${id}`,
+      input
+    );
+    if (!response.data.success) {
+      throw new Error(response.data.error || "Failed to update todo");
+    }
+    return response.data.data!;
+  },
+
+  updateStatusTodo: async (
+    id: string,
+    input: Partial<CreateTodoInput> & { completed?: boolean }
+  ): Promise<Todo> => {
     const response = await apiClient.patch<ApiResponse<Todo>>(
       `/todos/${id}/done`,
       input

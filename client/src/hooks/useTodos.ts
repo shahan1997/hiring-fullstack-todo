@@ -62,6 +62,27 @@ export const useTodos = () => {
     []
   );
 
+  const updateStatusTodoItem = useCallback(
+    async (
+      id: string,
+      updates: Partial<CreateTodoInput> & { completed?: boolean }
+    ) => {
+      try {
+        const updated = await todoService.updateStatusTodo(id, updates);
+        setTodos((prev) =>
+          prev.map((todo) => (todo._id === id ? updated : todo))
+        );
+        return updated;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to update todo";
+        setError(message);
+        throw err;
+      }
+    },
+    []
+  );
+
   const deleteTodoItem = useCallback(async (id: string) => {
     try {
       await todoService.deleteTodo(id);
@@ -79,9 +100,9 @@ export const useTodos = () => {
       const todo = todos.find((t) => t._id === id);
       if (!todo) return;
 
-      return updateTodoItem(id, { completed: !todo.done });
+      return updateStatusTodoItem(id, { completed: !todo.done });
     },
-    [todos, updateTodoItem]
+    [todos, updateStatusTodoItem]
   );
 
   return {
@@ -91,6 +112,7 @@ export const useTodos = () => {
     fetchTodos,
     addTodo,
     updateTodoItem,
+    updateStatusTodoItem,
     deleteTodoItem,
     toggleTodoComplete,
   };
